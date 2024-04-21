@@ -4,12 +4,12 @@
 # color in 24 bit RGB (8 bit for red, 8 for green, 8 for blue)
 .eqv	COLOR_BLACK		0x000000
 .eqv	COLOR_WHITE		0xFFFFFF
-.eqv	COLOR_RED		0xFF0000
-.eqv	COLOR_BLUE		0x0000FF
+.eqv	COLOR_GREEN		0x008000
+.eqv	COLOR_GOLD		0xFFD700
 .eqv	COLOR_GREY		0xAAAAAA
 
-.eqv	COLOR_PLAYER_1	COLOR_RED
-.eqv 	COLOR_PLAYER_2	COLOR_BLUE
+.eqv	COLOR_PLAYER_1	COLOR_GREEN
+.eqv 	COLOR_PLAYER_2	COLOR_GOLD
 
 # size of the board is 8 by 8 pixel, each pixel can contains a piece
 # since the game size is 6 row by 7 colukn, there will be some unused space

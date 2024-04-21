@@ -9,50 +9,50 @@ typedef int32_t word_t;
 #define COLUMN_NUM 7
 #define ROW_NUM 6
 
-byte_t end_game;       // boolean
-byte_t current_player; // can be 1 or 2 for player #1 or #2
-byte_t winner;         // can be 1 or 2 for player #1 or #2, 0 when tie
+byte_t end_game;       
+byte_t current_player; 
+byte_t winner;         
 
-// store the state of all position within the game
-// a position can have 3 value: 0 (empty), 1 (player #1 piece), 2 (player #2 piece)
+
+
 byte_t piece_position[COLUMN_NUM][ROW_NUM];
-// since pieces stack, each column will have a height value
-// this is used to find the position for the next piece
+
+
 byte_t column_height[COLUMN_NUM];
-// piece count is used to determine if there is still space left
-// the maximum value is COLUMN_NUM * ROW_NUM
+
+
 word_t piece_count;
 
-// PRINT AND USER INPUT
-// ____________________________________________________________________________
-// various print function
+
+
+
 void print_welcome_prompt(void);
 void print_current_player_prompt(void);
 void print_placement_column_prompt(void);
 void print_ending_prompt(void);
-// ask the player that will go first
+
 byte_t ask_for_first_player(void);
-// ask the column to place the next piece, with check for full column
+
 word_t ask_for_new_piece_column(void);
 
-// BITMAP DISPLAY FUNCTION
-// ____________________________________________________________________________
-// clear display
+
+
+
 void update_display_clear(void);
-// update display with new piece
+
 void update_display_add_new_piece(word_t column, byte_t player);
 
-// GAME STATE CHANGING AND HELPER FUNCTION
-// ____________________________________________________________________________
-// initialize display and global var
+
+
+
 void initialize(void);
-// check column if there is still space
+
 byte_t check_column_has_space(word_t column);
-// place piece into specified column, with said piece belonging to specified player
+
 void place_piece_into_column(word_t column, byte_t player);
-// check current board and update the game state (win, tie)
+
 void update_game_state(word_t column);
-// update current_player to be the other player
+
 void change_to_next_player_turn(void);
 
 int main(void)
@@ -61,33 +61,33 @@ int main(void)
     print_welcome_prompt();
     current_player = ask_for_first_player();
 
-    // start main loop, with each iteration being a player turn
+    
     while (!end_game)
     {
-        // print the current player turn
+        
         print_current_player_prompt();
-        // ask where the player want to place the next piece
+        
         word_t next_piece_column = ask_for_new_piece_column();
 
-        // place piece into the requested place
+        
         place_piece_into_column(next_piece_column, current_player);
         piece_count++;
 
-        // update the display with the new piece
-        // piece added will be colored corresponding to the player
+        
+        
         update_display_add_new_piece(next_piece_column, current_player);
 
-        // check the state of the game with the new piece
-        // we know that the most recent piece is on top of next_piece_column
-        // also check piece count so that the game end when there is no more space
+        
+        
+        
         update_game_state(next_piece_column);
 
         change_to_next_player_turn();
     }
 
-    // reach this when:
-    // - player #1 or #2 win (winner == 1 or 2)
-    // - there is a tie (i.e, run out of place to put new piece) (winner == 0)
+    
+    
+    
     print_ending_prompt();
 }
 
@@ -111,8 +111,8 @@ void initialize(void)
 
 void print_welcome_prompt(void)
 {
-    printf("Welcome to the game of Connect Four\n");
-    printf("In this game, two player (1 and 2) will take turn to place new pieces into "
+    printf("Welcome to the game of Find Four\n");
+    printf("In this game, two player which are 1 and 2 will take turn to place new pieces into "
            "a arbitrary column. There will be %d columns, each with %d rows.\n",
            COLUMN_NUM, ROW_NUM);
     printf("When put into a column, the piece will naturally fall to the lowest "
@@ -153,7 +153,7 @@ byte_t ask_for_first_player(void)
     word_t first_player;
     while (1)
     {
-        scanf("%" PRId32, &first_player); // will be replaced by syscall
+        scanf("%" PRId32, &first_player); 
         if (first_player == 1 || first_player == 2)
             break;
         else
@@ -170,11 +170,11 @@ word_t ask_for_new_piece_column(void)
     word_t next_piece_column;
     while (1)
     {
-        scanf("%" PRId32, &next_piece_column); // will be replaced by syscall
+        scanf("%" PRId32, &next_piece_column); 
 
         if (next_piece_column < COLUMN_NUM)
         {
-            // good input value
+            
         }
         else
         {
@@ -208,13 +208,13 @@ void place_piece_into_column(word_t column, byte_t current_player)
 
 void update_display_clear(void)
 {
-    // do nothing
+    
     return;
 }
 
 void update_display_add_new_piece(word_t column, byte_t player)
 {
-    // do nothing
+    
     return;
 }
 
@@ -223,9 +223,9 @@ void update_game_state(word_t column)
     word_t new_piece_row = column_height[column] - 1;
     byte_t new_piece_player = piece_position[column][new_piece_row];
 
-    // check horizontal
+    
     word_t inline_piece_count = 1;
-    for (word_t i = new_piece_row - 1; i >= 0; i--) // i may wrap back into negative
+    for (word_t i = new_piece_row - 1; i >= 0; i--) 
     {
         if (piece_position[column][i] == new_piece_player)
             inline_piece_count++;
@@ -246,7 +246,7 @@ void update_game_state(word_t column)
         return;
     }
 
-    // check vertical
+    
     inline_piece_count = 1;
     for (word_t i = column - 1; i >= 0; i--)
     {
@@ -269,7 +269,7 @@ void update_game_state(word_t column)
         return;
     }
 
-    // check diagonal (upper left to lower right)
+    
     inline_piece_count = 1;
     for (word_t i = 1; (column-i) >= 0 && (new_piece_row+i) < ROW_NUM; i++)
     {
@@ -292,7 +292,7 @@ void update_game_state(word_t column)
         return;
     }
 
-    // check diagonal (lower left to upper right)
+    
     inline_piece_count = 1;
     for (word_t i = 1; (column-i) >= 0 && (new_piece_row-i) >= 0; i++)
     {
@@ -315,8 +315,8 @@ void update_game_state(word_t column)
         return;
     }
 
-    // if most recently added piece does not cause a win
-    // check if there is no space left
+    
+    
     if (piece_count == ROW_NUM * COLUMN_NUM)
     {
         end_game = 1;
@@ -324,7 +324,7 @@ void update_game_state(word_t column)
         return;
     }
 
-    return; // no state change
+    return; 
 }
 
 void change_to_next_player_turn(void)
